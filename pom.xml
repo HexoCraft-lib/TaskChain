@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Parent -->
+    <parent>
+        <groupId>com.github.hexocraft-lib</groupId>
+        <artifactId>hexocraftlib</artifactId>
+        <version>2.0.0-SNAPSHOT</version>
+        <relativePath>../HexoCraftLib</relativePath>
+    </parent>
+
+    <!-- Artifact properties -->
+    <artifactId>taskchain</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+
+    <!-- Info -->
+    <name>TaskChain</name>
+    <description>TaskChain Control Flow framework. Helps facilitate running tasks on an application's "Main Thread" (such as a game), and tasks off the main (async).</description>
+    <url>https://github.com/HexoCraft-lib/TaskChain</url>
+
+    <!-- Source control -->
+    <scm>
+        <connection>scm:git:git://github.com/HexoCraft-lib/TaskChain.git</connection>
+        <developerConnection>scm:git:git@github.com:HexoCraft-lib/TaskChain.git</developerConnection>
+        <url>http://github.com/HexoCraft-lib/TaskChain</url>
+    </scm>
+
+    <!-- Issue management -->
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/HexoCraft-lib/TaskChain/issues</url>
+    </issueManagement>
+
+    <!-- Jenkins server -->
+    <ciManagement>
+        <system>Jenkins</system>
+        <url>http://jenkins.hexocube.fr/job/HexoCraft-lib/job/TaskChain</url>
+    </ciManagement>
+
+    <!-- Properties -->
+    <properties>
+        <shade.pattern>com.hexocraft.lib.taskchain</shade.pattern>
+    </properties>
+
+    <!-- HexoCraft artifactory repository should have all needed artifacts to build the libs -->
+    <repositories>
+        <repository>
+            <id>hexocraft-repo</id>
+            <url>http://repo.hexocube.fr/artifactory/public</url>
+        </repository>
+    </repositories>
+
+    <!-- Dependencies -->
+    <dependencies>
+        <!-- aikar TaskChain -->
+        <dependency>
+            <groupId>co.aikar</groupId>
+            <artifactId>taskchain-bukkit</artifactId>
+            <version>3.7.1</version>
+        </dependency>
+    </dependencies>
+
+    <!-- Build options -->
+    <build>
+        <defaultGoal>clean install</defaultGoal>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <finalName>${project.artifactId}-${project.version}</finalName>
+
+        <!-- Plugins -->
+        <plugins>
+            <!-- Shade -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals><goal>shade</goal></goals>
+                        <configuration>
+                            <minimizeJar>false</minimizeJar>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <relocations>
+                                <relocation>
+                                    <pattern>co.aikar.taskchain</pattern>
+                                    <shadedPattern>${shade.pattern}</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Source -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+            <!-- Javadoc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+            </plugin>
+        </plugins>
+
+    </build>
+</project>
